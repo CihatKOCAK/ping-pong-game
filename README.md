@@ -1,6 +1,6 @@
-#Ping Pong Game
+# Ping Pong Game
 
-This game was made using <a href ="https://phaser.io/">phaser</a> as API.
+This game was made using <a href ="https://phaser.io/">phaser</a>.
 
 ## For Installation and Run
 
