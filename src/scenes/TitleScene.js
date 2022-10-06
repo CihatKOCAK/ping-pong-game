@@ -51,16 +51,14 @@ class TitleScene extends Phaser.Scene {
       .setShadow(2, 2, "#333333", 2, true, true);
 
     this.input.keyboard.on("keydown-TAB", () => {
-      this.scene.start("game", { mode: "watch" });
+      this.scene.start("game", { watchMode: false });
     });
 
     this.input.keyboard.on("keydown-SPACE", () => {
-        // set the mode to play
-        this.scene.start("game", { mode: "play" });
+      // set the mode to play
+      this.scene.start("game", { watchMode: true });
     });
   }
-
-
 
   update() {}
 }

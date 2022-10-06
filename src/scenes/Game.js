@@ -1,6 +1,12 @@
 import Phaser from "phaser";
 import WebFontFile from "./WebFontFile";
 
+const gameState = {
+  stillGame: true,
+  winnerSide: "",
+  gameOver: false,
+};
+
 class Game extends Phaser.Scene {
   preload() {
     this.load.addFile(new WebFontFile(this.load, "Press Start 2P"));
@@ -8,9 +14,12 @@ class Game extends Phaser.Scene {
 
   init() {
     this.autoGamerSpeed = new Phaser.Math.Vector2(0, 0); // create a vector to store the speed of the rightGamer
-    
+
     this.leftGamerScore = 0;
     this.rightGamerScore = 0;
+
+    this.gameState = gameState.stillGame;
+    this.paused = false;
   }
 
   create() {
@@ -75,10 +84,13 @@ class Game extends Phaser.Scene {
   }
 
   update() {
+    if (this.paused || this.gameState !== gameState.stillGame) return;
+
     const pcSpeed = 5; // set the speed of the rightGamer
     const diff = this.ball.y - this.rightGamer.y;
     //if press up arrow
-    if (this.scene.settings.data.mode === "game") {
+    console.log(this.scene.settings.data.watchMode);
+    if (this.scene.settings.data.watchMode) {
       if (this.keyboard.down.isDown) {
         this.leftGamer.y += 5;
       } else if (this.keyboard.up.isDown) {
@@ -94,7 +106,6 @@ class Game extends Phaser.Scene {
         this.leftGamer.y -= 5;
         this.leftGamer.body.updateFromGameObject(); // update the position of the leftGamer
       }
-
     }
 
     // if (diff < 0) {
@@ -134,6 +145,31 @@ class Game extends Phaser.Scene {
         this.changeScore("left");
       }
       this.resetBall();
+    }
+
+    const maxScore = 1;
+    if (this.leftGamerScore >= maxScore) {
+      //console.log("leftGamer win");
+      this.winnerSide = 1;
+      this.gameState = gameState.gameOver;
+    } else if (this.rightGamerScore >= maxScore) {
+      //console.log("rightGamer win");
+      this.winnerSide = 2;
+      this.gameState = gameState.gameOver;
+    }
+
+    if (this.gameState !== gameState.stillGame) {
+      this.ball.active = false;
+      this.physics.world.remove(this.ball.body);
+      this.paused = true;
+      this.scene.stop("gameBackground");
+      this.scene.start("gameOver", {
+        score: this.leftGamerScore + " : " + this.rightGamerScore,
+        gameState: this.gameState,
+        winner:
+          this.winnerSide === 1 ? "Left Player WIN!" : "Right Player WIN!",
+        mode : this.scene.settings.data.watchMode
+      });
     }
   }
 }
