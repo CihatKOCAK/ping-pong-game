@@ -17,16 +17,16 @@ I will show pages and functions with pictures
 
 ### Menu
 
-![Screen Shot](readMEIMGS/menu.PNG)
+![Screen Shot](readMeIMGS/menu.PNG)
 
 ### Game Page
 
-![Screen Shot](readMEIMGS/game.PNG)
+![Screen Shot](readMeIMGS/game.PNG)
 
 
 ### Game Over Page
 
-![Screen Shot](readMEIMGS/gameOver.PNG)
+![Screen Shot](readMeIMGS/gameOver.PNG)
 
 
 
