@@ -94,7 +94,7 @@ class Game extends Phaser.Scene {
     const pcSpeed = 5; // set the speed of the rightGamer
     const diff = this.ball.y - this.rightGamer.y;
     //if press up arrow
-    console.log(this.scene.settings.data.watchMode);
+    //console.log(this.scene.settings.data.watchMode);
     if (this.scene.settings.data.watchMode) {
       if (this.keyboard.down.isDown) {
         this.leftGamer.y += 5;
@@ -159,7 +159,7 @@ class Game extends Phaser.Scene {
       this.resetBall();
     }
 
-    const maxScore = 1;
+    const maxScore = this.scene.settings.data.watchMode ? 5 : 10;
     if (this.leftGamerScore >= maxScore) {
       //console.log("leftGamer win");
       this.winnerSide = 1;
