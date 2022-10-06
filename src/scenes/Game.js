@@ -3,24 +3,35 @@ import WebFontFile from "./WebFontFile";
 
 class Game extends Phaser.Scene {
   preload() {
-    this.load.addFile(new WebFontFile(this.load, 'Press Start 2P'));
+    this.load.addFile(new WebFontFile(this.load, "Press Start 2P"));
   }
 
   init() {
-    this.rightGamerSpeed = new Phaser.Math.Vector2(0, 0); // create a vector to store the speed of the rightGamer
-
+    this.autoGamerSpeed = new Phaser.Math.Vector2(0, 0); // create a vector to store the speed of the rightGamer
+    
     this.leftGamerScore = 0;
     this.rightGamerScore = 0;
   }
 
   create() {
-    const scoreStyle = { fontSize: 48, fill: "#fff", fontFamily: '"Press Start 2P"' };
+    this.scene.run("gameBackground"); // run the gameBackground scene
+
+    //exit game
+    this.input.keyboard.on("keydown-ESC", () => {
+      this.scene.start("titleScene");
+    });
+
+    const scoreStyle = {
+      fontSize: 48,
+      fill: "#fff",
+      fontFamily: '"Press Start 2P"',
+    };
 
     this.leftGamerScoreText = this.add
-      .text(100, 100, "0", scoreStyle)
+      .text(300, 100, "0", scoreStyle)
       .setOrigin(0.5, 0.5);
     this.rightGamerScoreText = this.add
-      .text(700, 100, "0", scoreStyle)
+      .text(500, 100, "0", scoreStyle)
       .setOrigin(0.5, 0.5);
 
     // this.add.text(400, 200, "Game", { fill: "#0f0" });
@@ -41,7 +52,7 @@ class Game extends Phaser.Scene {
 
     this.keyboard = this.input.keyboard.createCursorKeys(); // create the keyboard object
 
-    this.physics.world.setBounds(-100, 0, 1000, 500); // set the bounds of the world
+    this.physics.world.setBounds(-100, 0, 1000, 600); // set the bounds of the world
 
     this.resetBall(); // reset the position of the ball
   }
@@ -65,16 +76,27 @@ class Game extends Phaser.Scene {
 
   update() {
     const pcSpeed = 5; // set the speed of the rightGamer
-
-    //if press up arrow
-    if (this.keyboard.down.isDown) {
-      this.leftGamer.y += 5;
-    } else if (this.keyboard.up.isDown) {
-      this.leftGamer.y -= 5;
-    }
-    this.leftGamer.body.updateFromGameObject(); // update the position of the leftGamer
-
     const diff = this.ball.y - this.rightGamer.y;
+    //if press up arrow
+    if (this.scene.settings.data.mode === "game") {
+      if (this.keyboard.down.isDown) {
+        this.leftGamer.y += 5;
+      } else if (this.keyboard.up.isDown) {
+        this.leftGamer.y -= 5;
+      }
+      this.leftGamer.body.updateFromGameObject(); // update the position of the leftGamer
+    } else {
+      //auto move for leftGamer
+      if (diff < 0) {
+        this.leftGamer.y += 5;
+        this.leftGamer.body.updateFromGameObject(); // update the position of the leftGamer
+      } else if (diff > 0) {
+        this.leftGamer.y -= 5;
+        this.leftGamer.body.updateFromGameObject(); // update the position of the leftGamer
+      }
+
+    }
+
     // if (diff < 0) {
     //   // if the ball is above the rightGamer
     //   this.rightGamer.y -= 10;
@@ -84,21 +106,21 @@ class Game extends Phaser.Scene {
     //   this.rightGamer.body.updateFromGameObject();
     // }
 
-    this.rightGamer.y += this.rightGamerSpeed.y;
+    this.rightGamer.y += this.autoGamerSpeed.y;
     this.rightGamer.body.updateFromGameObject();
 
     if (diff < 0) {
-      this.rightGamerSpeed.y = -pcSpeed;
-      if (this.rightGamerSpeed.y < -10) {
-        this.rightGamerSpeed.y = -10;
+      this.autoGamerSpeed.y = -pcSpeed;
+      if (this.autoGamerSpeed.y < -10) {
+        this.autoGamerSpeed.y = -10;
       }
     } else if (diff > 0) {
-      this.rightGamerSpeed.y = pcSpeed;
-      if (this.rightGamerSpeed.y > 10) {
-        this.rightGamerSpeed.y = 10;
+      this.autoGamerSpeed.y = pcSpeed;
+      if (this.autoGamerSpeed.y > 10) {
+        this.autoGamerSpeed.y = 10;
       }
     } else {
-      this.rightGamerSpeed.y = 0;
+      this.autoGamerSpeed.y = 0;
     }
 
     if (Math.abs(diff) < 10) {

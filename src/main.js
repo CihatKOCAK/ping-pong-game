@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 import TitleScene from "./scenes/TitleScene";
 import Game from "./scenes/Game";
+import GameBackground from "./scenes/GameBackground";
 
 const config = {
   width: 800,
@@ -18,6 +19,8 @@ const config = {
 const game = new Phaser.Game(config);
 
 game.scene.add("titleScene", TitleScene); // add the scene to the game
-game.scene.add("game", Game); // add the scene to the game
+game.scene.add("game", Game ); // add the scene to the game
+game.scene.add("gameBackground", GameBackground); // add the scene to the game
 //game.scene.start('titleScene'); // start the scene
-game.scene.start("game"); // start the scene
+
+game.scene.start("titleScene"); // start the scene
