@@ -7,7 +7,7 @@ class TitleScene extends Phaser.Scene {
   }
 
   preload() {
-    console.log(this);
+    //console.log(this);
     // this.load.image("title", "assets/title.png");
     this.load.addFile(new WebFontFile(this.load, "Press Start 2P", "google"));
   }

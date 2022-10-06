@@ -10,6 +10,10 @@ const gameState = {
 class Game extends Phaser.Scene {
   preload() {
     this.load.addFile(new WebFontFile(this.load, "Press Start 2P"));
+
+    this.load.audio("peb", "assets/ping_pong_8bit_beeep.ogg");
+    this.load.audio("plop", "assets/ping_pong_8bit_plop.ogg");
+    this.load.audio("peeeeeep", "assets/ping_pong_8bit_peeeeeep.ogg");
   }
 
   init() {
@@ -23,6 +27,7 @@ class Game extends Phaser.Scene {
   }
 
   create() {
+    this.sound.play("peeeeeep");
     this.scene.run("gameBackground"); // run the gameBackground scene
 
     //exit game
@@ -108,6 +113,13 @@ class Game extends Phaser.Scene {
       }
     }
 
+    // sound effect
+    if (this.ball.body.blocked.left) {
+      this.sound.play("peb");
+    } else if (this.ball.body.blocked.right) {
+      this.sound.play("plop");
+    }
+
     // if (diff < 0) {
     //   // if the ball is above the rightGamer
     //   this.rightGamer.y -= 10;
@@ -168,7 +180,7 @@ class Game extends Phaser.Scene {
         gameState: this.gameState,
         winner:
           this.winnerSide === 1 ? "Left Player WIN!" : "Right Player WIN!",
-        mode : this.scene.settings.data.watchMode
+        mode: this.scene.settings.data.watchMode,
       });
     }
   }
