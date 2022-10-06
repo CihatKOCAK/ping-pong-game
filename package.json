@@ -1,0 +1,19 @@
+{
+  "name": "ping-pong-game",
+  "version": "1.0.0",
+  "description": "created ping-pong-game with Phaser3",
+  "main": "main.js",
+  "scripts": {
+    "start": "parcel src/index.html -p 8000"
+  },
+  "repository": {
+    "type": "git",
+    "url": "ping-pong-game-phaser3"
+  },
+  "author": "Cihat KOCAK",
+  "license": "ISC",
+  "dependencies": {
+    "parcel-bundler": "^1.12.5",
+    "phaser": "^3.55.2"
+  }
+}
